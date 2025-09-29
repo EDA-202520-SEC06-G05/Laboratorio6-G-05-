@@ -33,7 +33,7 @@ def new_map(num_elements,load_factor,prime):
 
 def is_available(table, pos):
 
-    entry = lt.get_element(table, pos)
+    entry = al.get_element(table, pos)
     if me.get_key(entry) is None or me.get_key(entry) == "__EMPTY__":
         return True
     return False
@@ -97,3 +97,28 @@ def put(my_map,key,value):
             rehash(my_map)
     
     return my_map
+
+def contains(my_map, key):
+    hash_index = mp.hash_value(my_map, key)
+    slot = find_slot(my_map, key, hash_index)
+    
+    if slot["key"] is None:
+        return False
+    if slot["key"] == key:
+        return True
+    else:
+        return False
+    
+def get(my_map, key):
+    hash_index = mp.hash_value(my_map, key)
+    slot = find_slot(my_map, key, hash_index)
+    
+    if slot["key"] is None:
+        return None
+    if slot["key"] == key:
+        return slot["value"]
+    else:
+        return None
+
+
+    
