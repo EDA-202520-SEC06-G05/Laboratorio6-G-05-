@@ -120,5 +120,21 @@ def get(my_map, key):
     else:
         return None
 
+def size(my_map):
+    return my_map["size"]
 
+
+def remove(my_map, key):
     
+    hash_index = mp.hash_value(my_map, key)
+    ocupada, slot = find_slot(my_map, key, hash_index)
+    if ocupada:
+        
+        al.get_element(my_map["table"], slot)["key"] = "_EMPTY_"
+        al.get_element(my_map["table"], slot)["value"] = None
+        
+        
+        my_map["size"] -= 1
+        my_map["current_factor"] = my_map["size"] / my_map["capacity"]
+        return True
+    return False
