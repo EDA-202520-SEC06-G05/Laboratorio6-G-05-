@@ -138,3 +138,25 @@ def remove(my_map, key):
         my_map["current_factor"] = my_map["size"] / my_map["capacity"]
         return True
     return False
+
+def is_empty(my_map):
+    if my_map["size"] == 0:
+        return True
+    else:
+        return False
+    
+def key_set(my_map):
+    lista = al.new_list()
+    table = my_map["table"]["elements"]
+    for slot in table:
+        if slot["key"] is not None:
+            al.add_last(lista, slot["key"])
+    return lista
+
+def value_set(my_map):
+    lista = al.new_list()
+    table = my_map["table"]["elements"]
+    for slot in table:
+        if slot["key"] is not None:
+            al.add_last(lista, slot["value"])
+    return lista
