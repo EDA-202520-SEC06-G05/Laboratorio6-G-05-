@@ -5,8 +5,7 @@ import random
 import math
 
 def new_map(num_elements,load_factor,prime):
-    if prime == None:
-        prime = 109345121
+    prime = 109345121
     if load_factor <= 0:
         return ("ValueError. load_factor debe ser > 0")
     
@@ -138,3 +137,5 @@ def remove(my_map, key):
         my_map["current_factor"] = my_map["size"] / my_map["capacity"]
         return True
     return False
+
+
