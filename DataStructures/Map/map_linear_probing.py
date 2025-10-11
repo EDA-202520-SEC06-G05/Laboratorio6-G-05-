@@ -7,6 +7,7 @@ import math
 def new_map(num_elements,load_factor,prime):
     if prime == None:
         prime = 109345121
+        
     if load_factor <= 0:
         return ("ValueError. load_factor debe ser > 0")
     
@@ -15,6 +16,7 @@ def new_map(num_elements,load_factor,prime):
     
     scale = random.randint(1,prime-1)
     shift = random.randint(0,prime-1) 
+    
     table = al.new_list()
     for i in range(capacity):
         al.add_last(table,{"key":None,"value":None})
