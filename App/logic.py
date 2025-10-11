@@ -30,6 +30,7 @@ import time
 import tracemalloc
 from DataStructures.List import array_list as al
 from DataStructures.Map import map_linear_probing as lp
+from DataStructures.Map import 
 
 
 
@@ -61,10 +62,10 @@ def new_logic():
     catalog['books_by_id'] = lp.new_map(10000, 0.7) #TODO completar la creación del mapa
 
     #Tabla de Hash con la siguiente pareja llave valor: (author_name -> List(books))
-    catalog['books_by_authors'] = lp.new_list(10000, 0.7) #TODO completar la creación del mapa
+    catalog['books_by_authors'] = lp.new_map(10000, 0.7) #TODO completar la creación del mapa
 
     #Tabla de Hash con la siguiente pareja llave valor: (tag_name -> tag)
-    catalog['tags'] = lp.new_list(20000, 0.7) #TODO completar la creación del mapa
+    catalog['tags'] = lp.new_map(20000, 0.7) #TODO completar la creación del mapa
 
     #Tabla de Hash con la siguiente pareja llave valor: (tag_id -> book_tags)
     catalog['book_tags'] = lp.new_map(2000,0.7)
@@ -85,10 +86,16 @@ def load_data(catalog):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
+    time = getTime()
+    memory = getMemory()
     books, authors = load_books(catalog)
     tag_size = load_tags(catalog)
     book_tag_size = load_books_tags(catalog)
-    return books, authors,tag_size,book_tag_size
+    end_time = getTime()
+    end_memory = getMemory()
+    delta = deltaTime(end_time, time)
+    delta_memory = deltaMemory(memory, end_memory)
+    return books, authors,tag_size,book_tag_size, delta, delta_memory
 
 
 def load_books(catalog):
@@ -212,7 +219,11 @@ def add_book_author_and_year(catalog, author_name, book):
             pub_year_map = lp.new_map(1000,0.7)
             lp.put(pub_year_map,pub_year,book)
     else:
-        pass # TODO Completar escenario donde no se había agregado el autor al mapa principal
+        pub_year_map = lp.new_map(1000, 0.7)
+        books = al.new_list()
+        al.add_last(books, book)
+        lp.put(pub_year_map, pub_year, books)
+        lp.put(books_by_year_author, author_name, pub_year_map)
     return catalog
 
 
@@ -253,7 +264,8 @@ def get_book_info_by_book_id(catalog, good_reads_book_id):
     Retorna toda la informacion que se tenga almacenada de un libro según su good_reads_id.
     """
     #TODO Completar función de consulta
-    pass
+    book = lp.get(catalog['books_by_id'], good_reads_book_id)
+    return book
 
 
 def get_books_by_author(catalog, author_name):
@@ -261,7 +273,8 @@ def get_books_by_author(catalog, author_name):
     Retorna los libros asociado al autor ingresado por párametro
     """
     #TODO Completar función de consulta
-    pass
+    author_books = lp.get(catalog['books_by_authors'], author_name)
+    return author_books
 
 
 def get_books_by_tag(catalog, tag_name):
