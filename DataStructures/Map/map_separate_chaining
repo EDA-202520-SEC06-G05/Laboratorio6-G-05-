@@ -1,0 +1,58 @@
+from DataStructures.List import single_linked_list as sl
+from DataStructures.Map import map_functions as mp
+from DataStructures.Map import map_entry as me
+from DataStructures.List import array_list as ar
+
+def default_compare(key, element):
+
+   if (key == me.get_key(element)):
+      return 0
+   elif (key > me.get_key(element)):
+      return 1
+   return -1
+
+
+def contains(my_map, key):
+    index = mp.hash_value(my_map, key)
+    slot = my_map["table"]["elements"][index]
+    node = slot["first"]
+    
+    while node is not None:
+        pair = node["info"]
+        if pair["key"] == key:
+            return True
+        node = node["next"]
+    return False
+
+def get(my_map, key):
+    index = mp.hash_value(my_map, key)
+    node = my_map["table"]["elements"][index]["first"]
+    while node is not None:
+        if node["info"]["key"] == key:
+            return node["info"]["value"]
+        node = node["next"]
+    return None
+
+def is_empty(my_map):
+    if my_map["size"] == 0:
+        return True
+    else:
+        return False
+    
+def key_set(my_map):
+    lista = ar.new_list()
+    for slot in my_map["table"]["elements"]:
+        node = slot["first"]
+        while node is not None:
+            ar.add_last(lista, node["info"]["key"])
+            node = node["next"]
+    return lista
+
+def value_set(my_map):
+    lista = ar.new_list()
+    for slot in my_map["table"]["elements"]:
+        node = slot["first"]
+        while node is not None:
+            ar.add_last(lista, node["info"]["value"])
+            node = node["next"]
+    return lista 
