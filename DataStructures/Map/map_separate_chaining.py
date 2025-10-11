@@ -7,7 +7,7 @@ import random
 
 def new_map(num_elements,load_factor,prime):
     prime = 109345121
-    if load_factor <= 0:
+    if load_factor > 0:
         capacity = int(math.ceil(num_elements/load_factor))
         capacity = mp.next_prime(capacity)
         
