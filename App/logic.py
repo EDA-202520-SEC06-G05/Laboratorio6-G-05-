@@ -28,7 +28,9 @@ import os
 import csv
 import time
 import tracemalloc
-
+from DataStructures.List import array_list as al
+from DataStructures.List import single_linked_list  as lt
+from DataStructures.Map import map_linear_probing as lp
 
 # TODO Realice la importación del mapa linear probing
 # TODO Realice la importación de ArrayList como estructura de datos auxiliar para sus requerimientos
@@ -194,22 +196,26 @@ def add_book_author_and_year(catalog, author_name, book):
         - Se crea el indice del nuevo autor, se crea dentro del valor el mapa asociado al nuevo año de publicación y 
         en el tercer nivel se agrega una lista como valor de este ultimo mapa con el libro asociado
     """
+    
     books_by_year_author = catalog['books_by_year_author']
     pub_year = book['original_publication_year']
-    #Si el año de publicación está vacío se reemplaza por un valor simbolico
-    #TODO Completar manejo de los escenarios donde el año de publicación es vacío.
-    author_value = lp.get(books_by_year_author,author_name)
+    if pub_year is None or pub_year == '' or pub_year == '0' or str(pub_year).lower() == 'none':
+        pub_year = 'Unknown'
+    author_value = lp.get(books_by_year_author, author_name)
     if author_value:
-        pub_year_value = lp.get(author_value,pub_year)
+        pub_year_value = lp.get(author_value, pub_year)
         if pub_year_value:
-            al.add_last(pub_year_value,book)
+            al.add_last(pub_year_value, book)
         else:
             books = al.new_list()
             al.add_last(books, book)
-            pub_year_map = lp.new_map(1000,0.7)
-            lp.put(pub_year_map,pub_year,book)
+            lp.put(author_value, pub_year, books)
     else:
-        pass # TODO Completar escenario donde no se había agregado el autor al mapa principal
+        pub_year_map = lp.new_map(1000, 0.7)
+        books = al.new_list()
+        al.add_last(books, book)
+        lp.put(pub_year_map, pub_year, books)
+        lp.put(books_by_year_author, author_name, pub_year_map)
     return catalog
 
 
